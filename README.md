@@ -1,1 +1,3 @@
-# G-rev-Listesi
+# Görev-Listesi
+-CRUD işlemi
+-Local Storage kullanımı
