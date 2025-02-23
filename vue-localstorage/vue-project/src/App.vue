@@ -17,8 +17,8 @@ const newItem= ref('')
 
 function addItem(){
   const newId=Date.now()
-  list.value.push({id:newId,description:newItem.value,isCompleted:false})
-  localStorage.setItem(`key${newId}`,`${JSON.stringify({id:newId,description:newItem.value,isCompleted:false})}`)
+  list.value.push({id:newId,description:newItem.value,isCompleted:false,editing:false})
+  localStorage.setItem(`key${newId}`,`${JSON.stringify({id:newId,description:newItem.value,isCompleted:false,editing:false})}`)
   newItem.value=""
 
 
@@ -63,7 +63,7 @@ const showDeleteConfirm = () => {
    
     <div v-if="listShow==true">
       <h3 class="h3Style"><a-button class="listShowButton" shape="circle" @click="listShow=!listShow"><DownOutlined/></a-button>Yapılacaklar Listesi</h3>
-     <Todo :list="list" @emitList="(e)=>caughtEmittedList(e)" :newItem="newItem" @emitUpdateItem="(e)=>newItem=e"/>
+     <Todo :list="list" @emitList="(e)=>caughtEmittedList(e)" :newItem="newItem"/>
     </div>
     <div v-else>
       <h3 class="h3Style"><a-button class="listShowButton" shape="circle" @click="listShow=!listShow"><RightOutlined/></a-button>Yapılacaklar Listesi</h3>
