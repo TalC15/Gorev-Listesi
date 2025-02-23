@@ -2,15 +2,16 @@
 import { ref,watch} from "vue";
 import { message } from 'ant-design-vue';
 import {FormOutlined,DeleteOutlined} from '@ant-design/icons-vue';
+import { includes } from "lodash";
 
 const props = defineProps({
   list: Object,
   newItem: String,
 });
 
-const emit = defineEmits(['emitList','emitUpdateItem',"emitListChange"])
-const degisken = ref(props.list)
-
+const emit = defineEmits(['emitList'])
+const editItem= ref("")
+const editMode = ref(false)
 
 function remove(i) {
   const removeIndex = `key${i?.id}`;
@@ -19,18 +20,42 @@ function remove(i) {
   emit("emitList",emitList2)
 }
 
-const change=(i)=>{
-  i.description=props.newItem
-  const updateIndex = `key${i?.id}`;
-  const updatedItem = JSON.stringify({...i,description:props.newItem})
-  localStorage.setItem(updateIndex,updatedItem)
-  emit('emitUpdateItem',"")
-  message.success('Değişiklik yapıldı')
+const change=(i)=>{ 
+
+ if(i.editing==true && i.description!==editItem.value){
+  i.description = editItem.value
+  const editKey = `key${i.id}`
+  const editedItem = JSON.stringify({...i,description:editItem.value,editing:false})
+  localStorage.setItem(editKey,editedItem)
+  i.editing = !i.editing
+  editItem.value = ""
+  message.success('Değişiklik yapıldı!')
+  editMode.value=false
+ }
+ else if(i.editing==true && i.description==editItem.value){
+  i.editing = !i.editing
+  editItem.value = ""
+  message.warning('Herhangi bir değişiklik yapılmadı!')
+  editMode.value=false
+ }
  
+ else if(editMode.value==false){
+   i.editing = !i.editing
+   editMode.value = true
+ }  
+
+ else{
+  message.loading("Aynı anda iki düzenleme yapılamaz!")
+ }
 };
 
-const cancel = (e) => {
-  message.error('Değişiklik yapılmadı');
+const cancel = (i) => {
+  if(i.editing==true && i.description==i.description){
+    i.editing=false
+    message.error('Değişiklik yapılmadı!');
+    editItem.value = ""
+    editMode.value = false
+  }
 };
 
 function ustunuCiz(i){
@@ -45,30 +70,25 @@ function ustunuCiz(i){
   //degisken.value=[...tempDegisken2,{...tempDegisken,isCompleted:ustuTiklanan}]
 }
 
-watch(degisken,(newItem, oldItem) => {
-  console.log('aaa',degisken,newItem,oldItem)
-})
+
 
 </script>
 
 <template>
   <TransitionGroup tag="ul" name="fade" class="container">
-    <li
-      :key="karpuz"
-      v-for="(i, karpuz) in list"
-      :class="i.isCompleted ? 'completedBackStyle item' : 'item'"
-    >
-      <span :class="i.isCompleted ? 'completed' : ''" @click="ustunuCiz(i)">{{ i?.description }}</span>
-      
-      <a-popconfirm
-      title="Burayı değiştirmek istediğinden emin misin?"
-      ok-text="Evet"
-      cancel-text="Hayır"
+    <li :key="index" v-for="(i, index) in list" :class="i.isCompleted ? 'completedBackStyle item' : 'item'">
+      <span v-if="!i.editing" :class="i.isCompleted ? 'completed' : ''" @click="ustunuCiz(i)">{{ i?.description }}</span>
+      <input class="editInput" v-else v-model="editItem"/>
+
+      <a-popconfirm 
+      :title="i.editing ? 'Burayı değiştirmek istediğinizden emin misiniz?' : 'Buradan verinizi değiştirebilirsiniz.'"
+      :ok-text="i.editing ? 'evet' : 'değiştir'"
+      :cancel-text="i.editing ? 'Hayır' : 'değiştirme'"
       @confirm="change(i)"
-      @cancel="cancel"
+      @cancel="cancel(i)"
       >
       <button class="editButtonStyle" > <FormOutlined/> </button>
-        </a-popconfirm>
+      </a-popconfirm>  
       <button class="removeButton" @click="remove(i)"> <DeleteOutlined/> </button>
      
     </li>
@@ -76,6 +96,12 @@ watch(degisken,(newItem, oldItem) => {
 </template>
 
 <style>
+
+.editInput{
+  border-radius: 1cqb;
+  margin-left: -6px;
+  border: 1px solid tomato;
+}
 
 .completedBackStyle{
   mix-blend-mode: overlay;
