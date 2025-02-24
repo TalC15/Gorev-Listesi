@@ -68,13 +68,13 @@ const showDeleteConfirm = () => {
 
        </div>
        <div v-else>
-         <h3 style="margin-left:10px"><SmallDashOutlined/></h3>
+         <h3 style="margin-left:10px;color:white"><SmallDashOutlined/></h3>
        </div>
     </div>
  </div>
     
  <div  class="divBox2">
-   <a-input placeholder="buraya yazınız"  @keyup.enter="addItem"  v-model:value="newItem" show-count :maxlength="20" />
+   <a-input placeholder="buraya yazınız"  @keyup.enter="addItem"  v-model:value="newItem" show-count :maxlength="50" />
    <div>
      <button class="buttonStyle" @click="addItem"><PlusOutlined/></button>
      <a-button :disabled="list.map(x=>x.editing).includes(true)" class="allDeleteButton" type="dashed" @click="showDeleteConfirm">Hepsini Sil</a-button>
@@ -92,6 +92,10 @@ const showDeleteConfirm = () => {
 </template>
 
 <style>
+
+body{
+  background-color: #181818;
+}
 
 .iconStyle{
   height:100px;
@@ -122,11 +126,14 @@ const showDeleteConfirm = () => {
 
 .bigDiv{
   display:flex;
+  margin:20px;
 }
 
 
 .h3Style{
   margin-bottom:10px;
+  color:white;
+  font-family:cursive;
 }
 
 .divBox1{

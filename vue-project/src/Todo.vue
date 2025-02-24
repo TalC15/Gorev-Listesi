@@ -96,6 +96,7 @@ function ustunuCiz(i){
 
 <style>
 
+
 .notDisabledButton{
   cursor:pointer;
 }
@@ -151,6 +152,7 @@ function ustunuCiz(i){
   margin-bottom: 5px;
   padding-left: 5px;
   display: flex;
+  font-family: system-ui;
 }
 
 .fade-move,
