@@ -1,28 +1,25 @@
 <script setup>
-import {ref,onUnmounted,onMounted} from 'vue'
+import {ref} from 'vue'
 import Todo from './Todo.vue'
-import Child from './child.vue'
-import {PlusOutlined,DownOutlined,RightOutlined,SmallDashOutlined,ExclamationCircleOutlined} from '@ant-design/icons-vue'
-import { Modal } from 'ant-design-vue';
+//import Child from './child.vue'
+import {PlusOutlined,DownOutlined,RightOutlined,SmallDashOutlined,ExclamationCircleOutlined,LoadingOutlined} from '@ant-design/icons-vue'
+import { message, Modal } from 'ant-design-vue';
 import { h } from 'vue';
 //sortBy(list, (a) => a.id)
 
 const degisken = ref(true)
 const listShow=ref(true)
+const newItem= ref('')
 
 const list=ref([
   ...(Object.entries(localStorage).filter(x=>!x[0].includes('vue')).map(a=>a[0]).map(b=>localStorage.getItem(b)).map(x=>JSON.parse(x)))
 ])
-const newItem= ref('')
 
 function addItem(){
   const newId=Date.now()
   list.value.push({id:newId,description:newItem.value,isCompleted:false,editing:false})
   localStorage.setItem(`key${newId}`,`${JSON.stringify({id:newId,description:newItem.value,isCompleted:false,editing:false})}`)
   newItem.value=""
-
-
-
 }
 
 function caughtEmittedList(e){
@@ -80,7 +77,7 @@ const showDeleteConfirm = () => {
    <a-input placeholder="buraya yazınız"  @keyup.enter="addItem"  v-model:value="newItem" show-count :maxlength="20" />
    <div>
      <button class="buttonStyle" @click="addItem"><PlusOutlined/></button>
-     <a-button class="allDeleteButton" type="dashed" @click="showDeleteConfirm">Hepsini Sil</a-button>
+     <a-button :disabled="list.map(x=>x.editing).includes(true)" class="allDeleteButton" type="dashed" @click="showDeleteConfirm">Hepsini Sil</a-button>
    </div>  
  </div>
 </div>
@@ -88,15 +85,18 @@ const showDeleteConfirm = () => {
 
 
 
-<div v-if="degisken">
+<!--<div v-if="degisken">
   <Child></Child>
-</div>
-
-<button class="button" @click="degisken=!degisken">{{ degisken ? "gizle" : "göster" }}</button>
+</div>-->
 
 </template>
 
 <style>
+
+.iconStyle{
+  height:100px;
+  width:200px;
+}
 
 .button{
   position:fixed;
@@ -145,6 +145,7 @@ const showDeleteConfirm = () => {
   width: 50px;
   font-family: cursive;
   border-radius: 1cqb;
+  cursor:pointer;
 }
 
 </style>

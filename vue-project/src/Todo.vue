@@ -2,7 +2,6 @@
 import { ref,watch} from "vue";
 import { message } from 'ant-design-vue';
 import {FormOutlined,DeleteOutlined} from '@ant-design/icons-vue';
-import { includes } from "lodash";
 
 const props = defineProps({
   list: Object,
@@ -77,7 +76,7 @@ function ustunuCiz(i){
 <template>
   <TransitionGroup tag="ul" name="fade" class="container">
     <li :key="index" v-for="(i, index) in list" :class="i.isCompleted ? 'completedBackStyle item' : 'item'">
-      <span v-if="!i.editing" :class="i.isCompleted ? 'completed' : ''" @click="ustunuCiz(i)">{{ i?.description }}</span>
+      <span v-if="!i.editing" :class="i.isCompleted ? 'completed pointer' : 'pointer'" @click="ustunuCiz(i)">{{ i?.description }}</span>
       <input class="editInput" v-else v-model="editItem"/>
 
       <a-popconfirm 
@@ -87,15 +86,23 @@ function ustunuCiz(i){
       @confirm="change(i)"
       @cancel="cancel(i)"
       >
-      <button class="editButtonStyle" > <FormOutlined/> </button>
+      <button class="editButtonStyle"><FormOutlined/></button>
       </a-popconfirm>  
-      <button class="removeButton" @click="remove(i)"> <DeleteOutlined/> </button>
+      <button :disabled="i.editing" :class="i.editing ? 'disabledButton removeButton' : 'notDisabledButton removeButton '" @click="remove(i)"> <DeleteOutlined/> </button>
      
     </li>
   </TransitionGroup>
 </template>
 
 <style>
+
+.notDisabledButton{
+  cursor:pointer;
+}
+
+.disabledButton{
+  cursor:not-allowed;
+}
 
 .editInput{
   border-radius: 1cqb;
@@ -115,12 +122,16 @@ function ustunuCiz(i){
   mix-blend-mode: overlay;
 }
 
+.pointer{
+  cursor:pointer;
+}
 
 .editButtonStyle{
   margin-left: auto;
   border-radius: 1cqb;
   margin-right:auto;
   margin-left:5px;
+  cursor:pointer;
 }
 
 .container {
