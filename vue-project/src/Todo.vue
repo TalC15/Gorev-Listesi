@@ -7,7 +7,7 @@ const props = defineProps({
   list: Object,
   newItem: String,
 });
-
+console.log("a")
 const emit = defineEmits(['emitList'])
 const editItem= ref("")
 const editMode = ref(false)
