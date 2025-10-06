@@ -1,7 +1,14 @@
 {
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-brands-svg-icons": "^6.7.2",
+    "@fortawesome/free-regular-svg-icons": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/vue-fontawesome": "^3.0.8",
     "ant-design-vue": "^4.2.6",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "pinia": "^3.0.3",
+    "vue-router": "^4.5.1"
   }
 }
