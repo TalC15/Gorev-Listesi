@@ -1,3 +1,10 @@
+#PROJEYİ PROJENE ÇEKTİKTEN SONRA SIRAYLA ŞU KODLARI YAZ
+#-npm install express (node_modules'ü indirir)
+#-npm install pinia (pinia'yı indirir)
+#-npm install vue-router (vue-router'i indirir)
+#-npm ant-design-vue (ant-design-vue'yu indirir)
+
+
 #Görev-Listesi
 #-CRUD işlemi -Local Storage kullanımı
 
